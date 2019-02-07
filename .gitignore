@@ -1,0 +1,11 @@
+# Environment
+wenv
+# Secret keys
+*.pem
+# Python 
+__pycache__*
+
+# Instance variables
+instance/*
+# Except for the default config
+!instance/default_config.py
