@@ -7,7 +7,7 @@ from .views import misc
 
 def create_app(test_config=None):
     # create and configure the app
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__, instance_relative_config=True, static_url_path='/static')
 
     if test_config is None:
         # load the instance config, if it exists, when not testing

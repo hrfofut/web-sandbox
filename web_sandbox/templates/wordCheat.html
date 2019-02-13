@@ -1,0 +1,127 @@
+ <!DOCTYPE html>
+<html>
+<meta charset="utf-8"/>
+<title>Word Winner</title>
+<head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+<script type="text/javascript">
+function myF(){
+	myFunction();
+	return false;
+}
+function myFunction() {	
+	var letters = document.getElementById("box").value.toLowerCase();
+   	var blanks = document.getElementById("blanks").value;
+	var len = letters.length + blanks;
+	// letters = letters.toLowerCase();
+    //document.getElementById("result").innerHTML = letters+" "+len;\
+    var letArray = ["","","","","","",""];
+    // var let2="";
+    // var let3="";
+    // var let4="";
+    // var let5="";
+    // var let6="";
+    // var let7="";
+    // var let8g="";
+	var txtArray = {{wordlist|safe}};
+	var leng = 79339;
+	var dbug = " ";
+		//leng = txtArray.length();
+	for (var i = 0; i < leng; i++) {
+		var points = 0;
+		var letCpy = letters;
+		var lengWord = txtArray[i].length;
+		var good = true;//add blank letters
+		var blankTmp = blanks;
+		if(len>=lengWord)
+		{	
+			for(var j =0;j<lengWord; j++){
+				ch = txtArray[i].charAt(j);
+				n = letCpy.indexOf(ch)
+				if(n>=0)
+				{//the point tally is terribly designed.
+					letCpy=letCpy.substr(0, n)+letCpy.substr(n+1);
+					if(ch=="d"||ch=="g")
+						points += 2;
+					else if(ch=='b'||ch=='c'||ch=='m'||ch=='p')
+						points += 3;
+					else if(ch=='f'||ch=='h'||ch=='v'||ch=='w'||ch=='y')
+						points += 4;
+					else if(ch=='k')
+						points += 5;
+					else if(ch=='j'||ch=='x')
+						points += 8;
+					else if(ch=='q'||ch=='z')
+						points += 10;
+					else
+						points++;
+				}
+				else{
+					if(blankTmp>0){
+						blankTmp--;
+					}
+					else{						
+						good = false;
+					break;	
+					}
+				}
+			
+		}
+			if(good){
+				if(lengWord >=8)
+					letArray[6]+="("+txtArray[i]+" : "+points+") ";
+				else
+					letArray[lengWord-2]+="("+txtArray[i]+" : "+points+") ";
+			}
+		}
+	}
+	var result = "";
+	if(letArray[6] != "") result+="<b>8+ letter words:</b> "+letArray[6]+"<br><br>";
+	for(var i = 7;i>=2;i--)
+	{
+		if(letArray[i-2] != "")
+			result+="<b>"+i+" letter words:</b> "+letArray[i-2]+"<br><br>";
+	}
+	document.getElementById("debug").innerHTML = dbug;
+	document.getElementById("result").innerHTML = result;
+};
+</script>
+
+
+</head>
+	<body>
+		<p id="demo">
+			<form onsubmit="return false;">
+				<input id="box" type="text" value="Letters Here">
+
+				Blank Tiles:
+				<select id="blanks">
+					<option value=0>0</value>
+					<option value=1>1</value>
+					<option value=2>2</value>
+				</select>
+				Sort by:
+				<select id="sel">
+					<option value=1>points</value>
+					<option value=2>length</value>
+					<option value=3>alphabetical</value>
+				</select>
+				<button onclick="myFunction()"> Submit </button>
+			</form>
+		</p>
+		<p id="result"></p>
+		<p id="debug"></p>
+		<!-- eventually have option to sort output by points(default) word length, alphabetical-->
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+	    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	</body>
+</html> 
