@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<title>Session</title>
+		<link href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ url_for('static', filename='web.css') }}" rel="stylesheet">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+		<script>
+			var odd = true
+			var socket = io.connect('http://' + document.domain + ':' + location.port);
+			socket.on( 'connect', function() {
+				socket.emit( 'my event', {
+					data: 'User Connected'
+				})
+				var form = $( 'form' ).on( 'submit', function( e ) {
+					e.preventDefault()
+					let user_name = $( 'input.username' ).val()
+					let user_input = $( 'input.message' ).val()
+					socket.emit( 'my event', {
+						user_name : user_name,
+						message : user_input
+					})
+					$( 'input.message' ).val( '' ).focus()
+				})
+			})
+			socket.on( 'my response', function( msg ) {
+				console.log( msg )
+				if( typeof msg.user_name !== 'undefined' ) {
+					$( 'h3' ).remove()
+					var chat_msg = '<div class="chat-msg">'
+					if(!odd)
+						chat_msg += '<p class="even">'
+					else
+						chat_msg += '<p>'
+					chat_msg += '<span class="username">'+msg.user_name+'</span> : <span class="msg">'+msg.message+'</span></p></div>'
+					$( '#msg_container' ).append(chat_msg)
+					odd = !odd;
+				}
+			})
+		</script>
+	</head>
+	<body style="height:100%">
+		<h3 style='color: #ccc;font-size: 30px;'>No message yet..</h3>
+		<div class="card floater">
+			<div class="card-body nested-c">
+				<div class="msg-c" id="msg_container"></div>
+				<div class="ent-c"  id="entry_container">
+					<form action="" method="POST">
+						<input type="text" class="username" placeholder="User Name"/>
+						<input type="text" class="message" placeholder="Messages"/>
+						<input type="submit"/>
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+	<script src="{{ url_for('static', filename='jquery/jquery.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+	</body>
+</html>

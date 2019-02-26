@@ -5,7 +5,7 @@ misc = Blueprint('misc', __name__)
 
 @misc.route("/")
 def splash(name=None):
-	return render_template('home.html')
+	return render_template('index.html')
 
 @misc.route("/wordcheat")
 def cheat(name=None):
