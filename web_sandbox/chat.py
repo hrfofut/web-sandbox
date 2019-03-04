@@ -14,7 +14,7 @@ html_escape_table = {
  }
 html_unescape_table = {v:k for k, v in html_escape_table.items()}
 
-@capp.route('/')
+@capp.route('/', methods=['GET', 'POST'])
 def sessions():
 	return render_template('session.html')
 
